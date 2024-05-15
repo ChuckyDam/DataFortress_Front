@@ -2,8 +2,24 @@
 
     <h2>Вход в аккаунт</h2>
 
-    <form>
-
+    <form (submit)="onSubmit($event)">
+        <app-input-auth 
+            class="Login__input"
+            [(valueInp)]="email" 
+            [type]="'email'" 
+            [placeHolder]="'email'"
+            [name]="'email'"
+            [id]="'emailAuth'"
+        >Эл. почта</app-input-auth>
+        <app-input-auth 
+            class="Login__input"
+            [(valueInp)]="password" 
+            [type]="'password'" 
+            [placeHolder]="'******'"
+            [name]="'password'"
+            [id]="'passwordAuth'"
+        >Пароль</app-input-auth>
+        <app-button-auth class="button">Войти</app-button-auth>
     </form>
 
     <ul>

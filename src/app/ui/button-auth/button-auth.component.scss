@@ -1,0 +1,17 @@
+.button{
+    cursor: pointer;
+    background-color: var(--accent);
+    color: var(--blueWhite);
+    padding: 5px 15px;
+    border-radius: 6px;
+
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 171%;
+    letter-spacing: -0.03em;
+
+    transition: all .3s;
+    &:hover{
+        scale: 1.1;
+    }
+}

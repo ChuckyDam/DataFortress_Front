@@ -1,3 +1,17 @@
-
-<input type="text" class="calculator__input" [(ngModel)]="value">
+<label [for]="id" class="input__label">
+    <span>
+        <ng-content></ng-content>
+    </span>
+    <input 
+        [placeholder]="placeHolder" 
+        class="input" 
+        type="{{type}}"
+        [(ngModel)]="valueInp" 
+        (input)="onInputChange($event)" 
+        [autocomplete]="type==='password'?'none':'on'"
+        required
+        [name]="name"
+        [id]="id"
+    >
+</label>
 

@@ -1,4 +1,5 @@
-.Login{
+
+@mixin formDefault(){
     h2{
         text-align: center;
     }
@@ -30,3 +31,5 @@
         gap: 20px;
     }
 }
+
+

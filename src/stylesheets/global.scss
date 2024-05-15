@@ -1,7 +1,11 @@
 :root{
-    --blackBlur: rgba(7,11,24,.2);
+    --blackBlur: rgba(7,11,24,.5);
     --blueBlur: rgba(150,173,255,.5);
     --blueWhite: #EEEEFF;
+    --white: #FFFFFF;
+    --blueBlack: #1D283A;
+    --backBlack: #030711;
+    --accent: #1D283A;
 }
 
 @font-face {
@@ -18,6 +22,12 @@
     font-family: Inter;
 }
 
+input{
+    outline: 0;
+}
+button{
+    border: 0;
+}
 ul{
     list-style: none;
 }
