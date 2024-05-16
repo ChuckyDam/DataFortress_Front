@@ -1,32 +1,5 @@
+@import "../../../../../stylesheets/mixins.scss";//БРЕД @ не работает
+
 .Login{
-    h2{
-        text-align: center;
-    }
-
-    &__input{
-        width: 100%;
-    }
-
-    form{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-
-        padding: 40px 0;
-
-
-        max-width: 80%;
-        margin: 0 auto;
-
-        .button{
-            padding-top: 10px;
-        }
-    }
-
-    ul{
-        display: flex;
-        justify-content: center;
-        gap: 20px;
-    }
+    @include formDefault();
 }

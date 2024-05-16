@@ -23,7 +23,7 @@ export class RegistrationComponent {
   onSubmit(event: Event) {
     event.preventDefault();
 
-    console.log(this.email, this.password);
+    console.log(this.email, this.password, this.fullName);
   }
 
 }

@@ -10,40 +10,34 @@ import { RoomComponent } from './pages/rooms/components/room/room.component';
 export const routes: Routes = [
     {
         path: '',
-        component: AppComponent,
+        component: AuthComponent,
         children: [
             {
                 path: '',
-                component: AuthComponent,
-                children: [
-                    {
-                        path: '',
-                        component: LoginComponent
-                    },
-                    {
-                        path: 'login',
-                        component: LoginComponent
-                    },
-                    {
-                        path: 'register',
-                        component: RegistrationComponent
-                    }
-                ]
+                component: LoginComponent
             },
             {
-                path: 'rooms',
-                component: RoomsComponent,
-                children: [
-                    {
-                        path: '',
-                        component: DefaultRoomComponent
-                    },
-                    {
-                        path: ':id',
-                        component: RoomComponent
-                    }
-                ]
+                path: 'login',
+                component: LoginComponent
             },
+            {
+                path: 'register',
+                component: RegistrationComponent
+            }
         ]
-    }
+    },
+    {
+        path: 'rooms',
+        component: RoomsComponent,
+        children: [
+            {
+                path: '',
+                component: DefaultRoomComponent
+            },
+            {
+                path: ':id',
+                component: RoomComponent
+            }
+        ]
+    },
 ];

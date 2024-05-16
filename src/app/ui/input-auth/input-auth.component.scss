@@ -1,20 +1,27 @@
 .input{
-    padding: 5px;
+    padding: 8px 12px;
     border: 1px solid var(--blueBlack);
     border-radius: 6px;
     background-color: var(--backBlack);
     color: var(--white);
     width: clamp(100px, 100%, 180px);
 
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 143%;
+    color: var(--text);
+
     &__label{
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         align-items: center;
         flex-wrap: wrap;
         gap: 10px;
 
         span{
+            flex-grow: 1;
+
             font-weight: 500;
             font-size: 14px;
             line-height: 100%;

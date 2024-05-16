@@ -1,0 +1,13 @@
+.App{
+    // overflow: hidden;
+
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+
+    padding: 80px;
+
+    &__logo{
+        width: 200px;
+    }
+}
