@@ -3,13 +3,16 @@
         <input 
             type="search" 
             placeholder="Поиск комнат"
+            [(ngModel)]="searchText"
         >
     </label>
 
     <div class="Search__rooms">
-        <div class="Search__room">
-            <p>Комната 404</p>
-        </div>
+        <ng-container *ngFor="let item of filteredData()">
+            <div class="Search__room" (click)="onClick(item.id)">
+                <p>{{item.name}}</p>
+            </div>
+        </ng-container>
     </div>
 
 </div>

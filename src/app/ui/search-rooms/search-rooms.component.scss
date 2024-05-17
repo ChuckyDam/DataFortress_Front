@@ -18,13 +18,12 @@
         width: 0px;
         border-radius: 10px;
 
-        background-color: rgba($color: #96ADFF, $alpha: 0.1);
-        border: 2px solid rgba($color: #96ADFF, $alpha: 0.1);
-        color: rgba($color: #96ADFF, $alpha: 1);
+        background-color: var(--blueLightOp);
+        border: 2px solid var(--blueLightOp);
+        color: var(--blueLight);
 
         &::placeholder{
-            // text-align: center;
-            color: rgba($color: #96ADFF, $alpha: .5);
+            color: var(--blueBlur);
             padding-left: 25px;
 
             background-image: url(../../../assets/images/btnSvgs/search.svg);
@@ -42,13 +41,30 @@
     }
 
     &__rooms{
+        padding-right: 3px;
         color: var(--blueWhite);
 
         display: flex;
         flex-direction: column;
+        gap: 10px;
 
         width: 100%;
         height: 100%;
+
+        overflow-y: auto;
+
+        &::-webkit-scrollbar {
+            width: 3px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--blackBlur);
+            border-radius: 5px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background-color: var(--blueBlack);
+        }
     }
     &__room{
         cursor: pointer;
