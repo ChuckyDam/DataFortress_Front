@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-button-auth',

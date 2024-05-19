@@ -1,40 +1,59 @@
 <div class="Registration">
 
-    <h2>Регистрация</h2>
+    <ng-container *ngIf="gotDate; else notVisible">
+        <h2>Подтверждение эл. почты</h2>
+        <form (submit)="onCheckCode($event)">
+            <app-input-auth 
+                [className]="'Login__input'"
+                [(valueInp)]="code"
+                [type]="'text'"
+                [name]="'code'"
+                [id]="'codeAuth'"
+            >Код</app-input-auth>
+            <app-button-auth class="button">
+                <img src="../../../../../assets/images/btnSvgs/check.svg" alt="check.svg">
+                Подтвердить
+            </app-button-auth>
+        </form>
+    </ng-container>
 
-    <form (submit)="onSubmit($event)">
-        <app-input-auth 
-            [className]="'Login__input'"
-            [(valueInp)]="fullName" 
-            [type]="'text'" 
-            [placeHolder]="'Сергей Щеголихин'"
-            [name]="'name'"
-            [id]="'nameAuth'"
-        >Имя польз.</app-input-auth>
-        <app-input-auth 
-            class="Registration__input"
-            [(valueInp)]="email" 
-            [type]="'email'" 
-            [placeHolder]="'gooool@gmail.com'"
-            [name]="'email'"
-            [id]="'emailAuth'"
-        >Эл. почта</app-input-auth>
-        <app-input-auth 
-            class="Registration__input"
-            [(valueInp)]="password" 
-            [type]="'password'" 
-            [placeHolder]="'******'"
-            [name]="'password'"
-            [id]="'passwordAuth'"
-        >Пароль</app-input-auth>
-        <app-button-auth class="button">
-            <img src="../../../../../assets/images/btnSvgs/how_to_reg.svg" alt="how_to_reg.svg">
-            Зарегестрироваться
-        </app-button-auth>
-    </form>
+    <ng-template #notVisible>
+        <h2>Регистрация</h2>
 
-    <ul>
-        <li><a [routerLink]="['/login']">Уже зарегестрированы?</a></li>
-    </ul>
+        <form (submit)="onSubmit($event)">
+            <app-input-auth 
+                [className]="'Login__input'"
+                [(valueInp)]="fullName" 
+                [type]="'text'" 
+                [placeHolder]="'Сергей Щеголихин'"
+                [name]="'name'"
+                [id]="'nameAuth'"
+            >Имя польз.</app-input-auth>
+            <app-input-auth 
+                class="Registration__input"
+                [(valueInp)]="email" 
+                [type]="'email'" 
+                [placeHolder]="'gooool@gmail.com'"
+                [name]="'email'"
+                [id]="'emailAuth'"
+            >Эл. почта</app-input-auth>
+            <app-input-auth 
+                class="Registration__input"
+                [(valueInp)]="password" 
+                [type]="'password'" 
+                [placeHolder]="'******'"
+                [name]="'password'"
+                [id]="'passwordAuth'"
+            >Пароль</app-input-auth>
+            <app-button-auth class="button">
+                <img src="../../../../../assets/images/btnSvgs/how_to_reg.svg" alt="how_to_reg.svg">
+                Зарегестрироваться
+            </app-button-auth>
+        </form>
+
+        <ul>
+            <li><a [routerLink]="['/login']">Уже зарегестрированы?</a></li>
+        </ul>
+    </ng-template>
 
 </div>
