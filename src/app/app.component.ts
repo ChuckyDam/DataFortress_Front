@@ -3,6 +3,9 @@ import { RouterOutlet } from '@angular/router';
 import { ErrorBoxComponent } from './ui/error-box/error-box.component';
 import { Subscription } from 'rxjs';
 import { ErrorService } from './services/error.service';
+import { ApiService } from './services/api.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CookieService } from './services/cookie.service';
 
 
 @Component({
@@ -10,27 +13,25 @@ import { ErrorService } from './services/error.service';
   standalone: true,
   imports: [
     RouterOutlet,
-    ErrorBoxComponent
+    ErrorBoxComponent,
+    HttpClientModule
   ],
   providers: [
-    ErrorService
+    ErrorService,
+    ApiService,
+    CookieService
   ],
   templateUrl: "./app.component.html",
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
 
-  active!: boolean;
   text!: string;
 
-  activeSubscription: Subscription;
   textSubscription: Subscription;
 
   constructor(private errorService: ErrorService) {
 
-    this.activeSubscription = this.errorService.active$.subscribe(active => {
-      this.active = active
-    });
     this.textSubscription = this.errorService.text$.subscribe(text => {
       this.text = text
     });
@@ -38,7 +39,6 @@ export class AppComponent {
   }
 
   ngOnDestroy(): void {
-    this.activeSubscription.unsubscribe();
     this.textSubscription.unsubscribe();
   }
   

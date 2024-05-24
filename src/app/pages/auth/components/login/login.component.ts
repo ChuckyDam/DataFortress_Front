@@ -1,3 +1,4 @@
+import { CookieService } from '@/app/services/cookie.service';
 import { HttpClientModule, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
@@ -12,21 +13,17 @@ import { InputAuthComponent } from 'src/app/ui/input-auth/input-auth.component';
   imports: [
     RouterModule,
     InputAuthComponent,
-    ButtonAuthComponent,
-    HttpClientModule
+    ButtonAuthComponent
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
-  providers: [
-    ApiService
-  ]
+  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
 
   public email: string = ""
   public password: string = ""
 
-  constructor(private apiService: ApiService, private errorService: ErrorService, private router: Router) { }
+  constructor(private apiService: ApiService, private errorService: ErrorService, private router: Router, private cookieService: CookieService) { }
 
   onSubmit(event: Event) {
     event.preventDefault();
@@ -36,23 +33,31 @@ export class LoginComponent {
       password: this.password
     })
     .subscribe(
-      (response: HttpResponse<"POST">)=>{
-        console.log(response);
+      (response: string)=>{
+        this.cookieService.setCookie("token", response, { expires: this.apiService.expires })
+        this.router.navigate(["/rooms"]);
       },
       (error: HttpErrorResponse) => {
+        console.error(error);
 
-        this.errorService.setError("Ошибка");
-        this.router.navigate(["/register"])
+        switch(error.status){
+          case 409:
+            this.errorService.setError("Пользователь не подтверждён");
+            break;
+          case 404:
+            this.errorService.setError("Пользователя не существует");
+            break;
+          case 400:
+            this.errorService.setError("Неверный пароль");
+            break;
 
-        if (error.status === 409) {
-          console.log(error);
-
-          
-        };
+          default:
+            this.errorService.setError("Ошибка подключения");
+            break;
+        }
       }
     )
 
-    // console.log(this.email, this.password);
   }
 
 }

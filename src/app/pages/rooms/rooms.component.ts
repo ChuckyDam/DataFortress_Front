@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterOutlet } from '@angular/router';
 import { SearchRoomsComponent } from 'src/app/ui/search-rooms/search-rooms.component';
+import { CookieService } from "@/app/services/cookie.service"
 
 @Component({
   selector: 'app-rooms',
@@ -15,6 +16,17 @@ import { SearchRoomsComponent } from 'src/app/ui/search-rooms/search-rooms.compo
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.scss'
 })
-export class RoomsComponent {
+export class RoomsComponent implements OnInit{
+
+  constructor(private cookieService: CookieService, private router: Router) {}
+
+  ngOnInit(): void {
+
+    if(!this.cookieService.getCookie("token")){
+      this.router.navigate(["/"]);
+    }
+
+    console.log(this.cookieService.getCookie("token"));
+  }
 
 }

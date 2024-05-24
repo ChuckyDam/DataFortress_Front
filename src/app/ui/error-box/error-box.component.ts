@@ -1,6 +1,9 @@
 import { Component, ElementRef, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { ErrorService } from 'src/app/services/error.service';
 
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 async function emergence(erBox: HTMLDivElement) {
   erBox.style.visibility = 'visible'
 }
@@ -27,13 +30,24 @@ export class ErrorBoxComponent implements OnChanges{
 
     if (changes["text"]) {
       const newValue = changes["text"].currentValue;
+      if (newValue === "") return;
       console.log('Value changed:', newValue);
 
       let erBox: HTMLDivElement = this.errorBox?.nativeElement;
       if (erBox){
-        emergence(erBox)
-        .then(()=>{
+        erBox.style.visibility = 'visible';
+        sleep(500)
+        .then(async()=>{
           this.active = true;
+          await sleep(3000);
+        })
+        .then(async()=>{
+          this.active = false;
+          await sleep(500);
+        })
+        .then(()=>{
+          erBox.style.visibility = 'hidden';
+          this.errorService.closeError();
         })
       }
       

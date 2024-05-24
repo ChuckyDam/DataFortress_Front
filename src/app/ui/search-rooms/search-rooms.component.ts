@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router, RouterModule } from '@angular/router';
 
 const data = [
   {
@@ -35,6 +36,18 @@ const data = [
     id: "6",
     name: "Doing"
   },
+  {
+    id: "4",
+    name: "Abc"
+  },
+  {
+    id: "5",
+    name: "Fuck"
+  },
+  {
+    id: "6",
+    name: "Doing"
+  },
 ]
 
 interface Room {
@@ -47,24 +60,28 @@ interface Room {
   standalone: true,
   imports: [
     FormsModule,
-    CommonModule
+    CommonModule,
+    RouterModule
   ],
   templateUrl: './search-rooms.component.html',
   styleUrl: './search-rooms.component.scss'
 })
 export class SearchRoomsComponent {
 
+  constructor(private router: Router) {}
+
   public data: Room[] = data;
 
   public searchText = '';
 
-  onClick(id:string) {
-    console.log(id);
-  }
   filteredData() {
     return this.data.filter(data => {
       return data.name.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1;
     });
+  }
+
+  addClick(){
+    this.router.navigate(["/rooms/addroom"])
   }
 
 }

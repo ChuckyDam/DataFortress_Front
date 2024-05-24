@@ -1,0 +1,90 @@
+.Room{
+    padding: 30px 15px;
+    width: 100%;
+    height: 100%;
+    color: var(--blueWhite);
+
+    &__container{
+        padding: 10px 0;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+
+        height: 100%;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: 3px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--blackBlur);
+            border-radius: 5px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background-color: var(--blueBlack);
+        }
+    }
+
+    &__file{
+        cursor: pointer;
+        user-select: none;
+
+        border-radius: 10px;
+        padding: 15px;
+        width: 220px;
+        height: 240px;
+
+        background-color: #111625;
+
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        >p{
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            
+            font-weight: 300;
+            font-size: 14px;
+            line-height: 130%;
+            letter-spacing: -0.03em;
+        }
+        &Image{
+            border-radius: 10px;
+            height: 60%;
+
+            background-position: 50% 50%;
+            background-repeat: no-repeat;
+            background-color: var(--blueLightOp);
+        }
+        &Tags{
+            display: flex;
+            gap: 10px;
+
+            div{
+                background-color: var(--blueLightOp);
+                padding: 5px 10px;
+                min-width: 40px;
+                max-width: 40%;
+                border-radius: 10px;
+
+                p{
+                    color: #eeeeff89;
+                    font-size: 10px;
+                    line-height: 130%;
+                    letter-spacing: -0.03em;
+                }
+            }
+        }
+
+        transition: .3s all;
+        &:hover{
+            background-color: #11162567;
+        }
+    }
+
+
+
+}

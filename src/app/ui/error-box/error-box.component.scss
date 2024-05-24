@@ -4,14 +4,19 @@
 
     position: fixed;
     z-index: 5;
-    top: 20%;
+    top: 10%;
     left: 40%;
     right: 40%;
 
     min-width: 180px;
 
-    background-color: white;
+    background-color: var(--accent);
+    backdrop-filter: blur(10px);
+    color: var(--red);
     padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    border-bottom: 3px solid var(--red);
 
     transition: .3s all;
 

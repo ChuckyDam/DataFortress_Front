@@ -1,1 +1,39 @@
-<p>room works!</p>
+
+<ng-container *ngIf="id === 'addroom'; else notVisible">
+    <app-create-room></app-create-room>
+</ng-container>
+
+<ng-template #notVisible>
+    <div class="Room">
+        <p>{{ id }}</p>
+        <div class="Room__container">
+            <div class="Room__file" *ngFor="let item of files">
+
+                <div class="Room__fileImage"
+                    *ngIf="item.type === types[0]"
+                    style="background-image: url(../../../../../assets/images/types/videocam.svg);"
+                ></div>
+                <div class="Room__fileImage"
+                    *ngIf="item.type === types[1]"
+                    style="background-image: url(../../../../../assets/images/types/picture_as_pdf.svg);"
+                ></div>
+                <div class="Room__fileImage"
+                    *ngIf="item.type === types[2]"
+                    style="background-image: url(../../../../../assets/images/types/table_chart.svg);"
+                ></div>
+                <div class="Room__fileImage"
+                    *ngIf="item.type === types[3]"
+                    style="background-image: url(../../../../../assets/images/types/photo.svg);"
+                ></div>
+
+                <p>{{item.name}}</p>
+                <div class="Room__fileTags">
+                    <div>
+                        <p>Скач.: {{item.countDownload}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+

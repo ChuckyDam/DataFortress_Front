@@ -1,6 +1,6 @@
 <div class="Registration">
 
-    <ng-container *ngIf="gotDate; else notVisible">
+    <ng-container *ngIf="gotData; else notVisible">
         <h2>Подтверждение эл. почты</h2>
         <form (submit)="onCheckCode($event)">
             <app-input-auth 
@@ -15,6 +15,9 @@
                 Подтвердить
             </app-button-auth>
         </form>
+        <ul>
+            <li><a (click)="onReg()">Зарегестрироваться</a></li>
+        </ul>
     </ng-container>
 
     <ng-template #notVisible>
@@ -53,6 +56,7 @@
 
         <ul>
             <li><a [routerLink]="['/login']">Уже зарегестрированы?</a></li>
+            <li><a (click)="onCode()">Подтвердить код</a></li>
         </ul>
     </ng-template>
 

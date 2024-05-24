@@ -1,15 +1,16 @@
 <div class="Search">
-    <label class="Search__input">
+    <div class="Search__input">
         <input 
             type="search" 
             placeholder="Поиск комнат"
             [(ngModel)]="searchText"
         >
-    </label>
+        <img src="../../../assets/images/btnSvgs/plus.svg" alt="add" class="Search__addRoom" (click)="addClick()">
+    </div>
 
     <div class="Search__rooms">
         <ng-container *ngFor="let item of filteredData()">
-            <div class="Search__room" (click)="onClick(item.id)">
+            <div class="Search__room" [routerLink]="['/rooms', item.id]" routerLinkActive="active">
                 <p>{{item.name}}</p>
             </div>
         </ng-container>

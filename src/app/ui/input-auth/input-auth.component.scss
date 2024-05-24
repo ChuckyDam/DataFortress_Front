@@ -9,7 +9,6 @@
     font-weight: 400;
     font-size: 14px;
     line-height: 143%;
-    color: var(--text);
 
     &__label{
         width: 100%;
@@ -18,7 +17,8 @@
         align-items: center;
         flex-wrap: wrap;
         gap: 10px;
-
+        color: var(--white);
+        
         span{
             flex-grow: 1;
 
