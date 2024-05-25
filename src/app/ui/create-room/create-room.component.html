@@ -1,5 +1,5 @@
 <div class="CreateRoom">
-    <form class="container">
+    <form (submit)="onSubmit($event)" class="container">
         <h2>Создать комнату</h2>
         <app-input-auth
             [(valueInp)]="name"

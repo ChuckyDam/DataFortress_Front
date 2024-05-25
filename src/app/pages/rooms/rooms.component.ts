@@ -2,6 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { SearchRoomsComponent } from 'src/app/ui/search-rooms/search-rooms.component';
 import { CookieService } from "@/app/services/cookie.service"
+import { ApiService } from '@/app/services/api.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorService } from '@/app/services/error.service';
+import { Subscription } from 'rxjs';
+import { RoomsService } from '@/app/services/rooms.service';
+
+interface Room {
+  id: string;
+  name: string;
+}
 
 @Component({
   selector: 'app-rooms',
@@ -18,15 +28,50 @@ import { CookieService } from "@/app/services/cookie.service"
 })
 export class RoomsComponent implements OnInit{
 
-  constructor(private cookieService: CookieService, private router: Router) {}
+  public data: Room[] = [];
+  public subData!: Subscription;
+
+  constructor(private cookieService: CookieService, private router: Router, private apiService: ApiService, private errorService: ErrorService, private roomsService: RoomsService) {
+
+    this.subData = this.roomsService.rooms.subscribe(rooms => {
+      this.data = rooms;
+    });
+
+  }
 
   ngOnInit(): void {
 
-    if(!this.cookieService.getCookie("token")){
+    const token = this.cookieService.getCookie("token");
+
+    if(!token){
       this.router.navigate(["/"]);
+      return;
     }
 
-    console.log(this.cookieService.getCookie("token"));
+    this.apiService.toRoomsGet(token).subscribe(
+      (response)=>{
+        this.roomsService.setRooms(response);
+      },
+      (error: HttpErrorResponse)=>{
+        console.error(error);
+
+        switch(error.status){
+          case 409:
+            this.errorService.setError("Пользователь не подтверждён");
+            break;
+
+          default:
+            this.errorService.setError("Ошибка подключения");
+            break;
+        }
+
+        this.router.navigate(["/"]);
+      }
+    )
+
   }
 
+  ngOnDestroy(): void {
+    this.subData.unsubscribe();
+  }
 }

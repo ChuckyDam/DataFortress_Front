@@ -17,6 +17,10 @@ export interface VerifRequestBody {
   code: string;
 }
 
+export interface CreateRoomRequestBody {
+  name: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -71,6 +75,36 @@ export class ApiService {
       .pipe(
         timeout(5000),
         retry(1)
+    );
+  }
+
+  toRoomsGet(token: string): Observable<any> {
+    const endpoint = "api/room";
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+      })
+    };
+
+    return this.http.get(`${this.apiURL}/${endpoint}`, httpOptions)
+      .pipe(
+        timeout(5000),
+        retry(1)
+    );
+  }
+
+  toCreateRoom(token: string, getName: string){
+    const endpoint = "api/room";
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      })
+    };
+
+    return this.http.post(`${this.apiURL}/${endpoint}?name=${getName}`, {}, httpOptions)
+      .pipe(
+        timeout(5000)
     );
   }
 

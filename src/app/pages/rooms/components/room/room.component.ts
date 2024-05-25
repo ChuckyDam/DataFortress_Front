@@ -97,6 +97,13 @@ export class RoomComponent implements OnInit{
   public id !: string|null;
 
   public types = typesFiles;
+  public images = new Map([
+    ["video", "../../../../../assets/images/types/videocam.svg"],
+    ["pdf", "../../../../../assets/images/types/picture_as_pdf.svg"],
+    ["xlsx", "../../../../../assets/images/types/table_chart.svg"],
+    ["image", "../../../../../assets/images/types/photo.svg"]
+  ]);
+
   public files = files;
 
   constructor(private route: ActivatedRoute) {}

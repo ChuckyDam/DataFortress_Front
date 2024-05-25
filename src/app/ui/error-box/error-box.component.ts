@@ -36,7 +36,7 @@ export class ErrorBoxComponent implements OnChanges{
       let erBox: HTMLDivElement = this.errorBox?.nativeElement;
       if (erBox){
         erBox.style.visibility = 'visible';
-        sleep(500)
+        sleep(0)
         .then(async()=>{
           this.active = true;
           await sleep(3000);

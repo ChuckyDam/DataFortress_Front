@@ -86,7 +86,9 @@
     }
 
     &__addRoom{
+        
         cursor: pointer;
+        user-select: none;
 
         position: absolute;
         right: 10px;
@@ -94,7 +96,8 @@
 
         transition: .3s all;
         &:hover{
-            transform: rotate(45deg);
+            transform: rotate(10deg);
+            scale: 1.1;
         }
     }
 
