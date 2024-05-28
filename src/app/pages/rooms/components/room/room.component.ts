@@ -1,11 +1,15 @@
 import { ApiService } from '@/app/services/api.service';
+import { CookieService } from '@/app/services/cookie.service';
+import { ErrorService } from '@/app/services/error.service';
 import { FilesService } from '@/app/services/files.service';
 import { CreateRoomComponent } from '@/app/ui/create-room/create-room.component';
 import { FileReceiverComponent } from '@/app/ui/file-receiver/file-receiver.component';
 import { ModalWindowComponent } from '@/app/ui/modal-window/modal-window.component';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 const typesFiles = ["video", "pdf", "xlsx", "image"] as const;
 type typeFiles = typeof typesFiles[number];
@@ -125,18 +129,47 @@ export class RoomComponent implements OnInit{
     ["image", "../../../../../assets/images/types/photo.svg"]
   ]);
 
-  public files = files
-  
-  constructor(private route: ActivatedRoute, private filesService: FilesService, private apiService: ApiService) {}
+  public files : File[] = []
+  public subData!: Subscription;
+
+  constructor(private route: ActivatedRoute, private filesService: FilesService, private apiService: ApiService, private cookieService: CookieService, private router: Router, private errorService: ErrorService) {
+    
+    this.subData = this.filesService.files.subscribe(files => {
+      this.files = files;
+    });
+  }
   
   ngOnInit(): void {
+    const token = this.cookieService.getCookie("token");
+
+    if(!token){
+      this.router.navigate(["/"]);
+      return;
+    }
+
     this.route.paramMap.subscribe(params => {
       this.id = `${params.get("id")}`;
 
       this.modalSetting = false;
     });
 
-    this.apiService
+    this.apiService.toGetFiles(token, this.id)
+    .subscribe(
+      (response)=>{
+        this.filesService.setFiles(response);
+      },
+      (error: HttpErrorResponse)=>{
+        console.error(error);
+
+        switch(error.status){
+          default:
+            this.errorService.setError("Ошибка подключения");
+            break;
+        }
+
+        this.router.navigate(["/"]);
+      }
+    )
   }
 
 }

@@ -127,7 +127,7 @@ export class ApiService {
     );
   }
 
-  toGetFiles(token: string, roomId: string){
+  toGetFiles(token: string, roomId: string): Observable<any>{
     const endpoint = "api/Files/"
     const httpOptions ={
       headers: new HttpHeaders({
