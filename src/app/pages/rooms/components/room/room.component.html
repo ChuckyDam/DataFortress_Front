@@ -16,13 +16,13 @@
             <div class="Room__file" *ngFor="let item of files">
 
                 <div class="Room__fileImage"
-                    [style.background-image]="'url('+ images.get(item.type) || '' +')'"
+                    [style.background-image]="'url('+ images.get(item.format) || '' +')'"
                 ></div>
 
                 <p>{{item.name}}</p>
                 <div class="Room__fileTags">
                     <div>
-                        <p>Скач.: {{item.countDownload}}</p>
+                        <p>Скач.: {{item.downloads}}</p>
                     </div>
                 </div>
             </div>

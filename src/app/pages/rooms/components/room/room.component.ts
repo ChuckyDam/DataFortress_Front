@@ -1,3 +1,5 @@
+import { ApiService } from '@/app/services/api.service';
+import { FilesService } from '@/app/services/files.service';
 import { CreateRoomComponent } from '@/app/ui/create-room/create-room.component';
 import { FileReceiverComponent } from '@/app/ui/file-receiver/file-receiver.component';
 import { ModalWindowComponent } from '@/app/ui/modal-window/modal-window.component';
@@ -8,80 +10,82 @@ import { ActivatedRoute } from '@angular/router';
 const typesFiles = ["video", "pdf", "xlsx", "image"] as const;
 type typeFiles = typeof typesFiles[number];
 
-interface file {
+interface File {
   id: string;
   name: string;
-  type: typeFiles;
-  countDownload: string;
+  room_id: string;
+  format: string;
+  downloads: number;
 }
 
-const files: Array<file> = [
+const files: Array<File> = [
   {
     id: "auwgfao832o",
     name: "Как Сергей спит",
-    type: "video",
-    countDownload: "0"
+    room_id: "qqq",
+    format: "video",
+    downloads: 0
   }, 
-  {
-    id: "srbr42ge23f",
-    name: "Резюме",
-    type: "pdf",
-    countDownload: "3"
-  },
-  {
-    id: "gseh5j54w",
-    name: "О глобальной слежке США",
-    type: "video",
-    countDownload: "0"
-  },
-  {
-    id: "segsehwe2ewr44",
-    name: "Не смотрим",
-    type: "image",
-    countDownload: "32"
-  },
-  {
-    id: "segsehwe2ewr44",
-    name: "Не смотрим",
-    type: "image",
-    countDownload: "32"
-  },
-  {
-    id: "gseh5j54w",
-    name: "О глобальной слежке США",
-    type: "video",
-    countDownload: "0"
-  },
-  {
-    id: "segsehwe2ewr44",
-    name: "Не смотрим",
-    type: "image",
-    countDownload: "32"
-  },
-  {
-    id: "segsehwe2ewr44",
-    name: "Не смотрим",
-    type: "image",
-    countDownload: "32"
-  },
-  {
-    id: "gseh5j54w",
-    name: "О глобальной слежке США",
-    type: "video",
-    countDownload: "0"
-  },
-  {
-    id: "segsehwe2ewr44",
-    name: "Не смотрим",
-    type: "image",
-    countDownload: "32"
-  },
-  {
-    id: "segsehwe2ewr44",
-    name: "Не смотрим",
-    type: "image",
-    countDownload: "32"
-  },
+  // {
+  //   id: "srbr42ge23f",
+  //   name: "Резюме",
+  //   type: "pdf",
+  //   countDownload: "3"
+  // },
+  // {
+  //   id: "gseh5j54w",
+  //   name: "О глобальной слежке США",
+  //   type: "video",
+  //   countDownload: "0"
+  // },
+  // {
+  //   id: "segsehwe2ewr44",
+  //   name: "Не смотрим",
+  //   type: "image",
+  //   countDownload: "32"
+  // },
+  // {
+  //   id: "segsehwe2ewr44",
+  //   name: "Не смотрим",
+  //   type: "image",
+  //   countDownload: "32"
+  // },
+  // {
+  //   id: "gseh5j54w",
+  //   name: "О глобальной слежке США",
+  //   type: "video",
+  //   countDownload: "0"
+  // },
+  // {
+  //   id: "segsehwe2ewr44",
+  //   name: "Не смотрим",
+  //   type: "image",
+  //   countDownload: "32"
+  // },
+  // {
+  //   id: "segsehwe2ewr44",
+  //   name: "Не смотрим",
+  //   type: "image",
+  //   countDownload: "32"
+  // },
+  // {
+  //   id: "gseh5j54w",
+  //   name: "О глобальной слежке США",
+  //   type: "video",
+  //   countDownload: "0"
+  // },
+  // {
+  //   id: "segsehwe2ewr44",
+  //   name: "Не смотрим",
+  //   type: "image",
+  //   countDownload: "32"
+  // },
+  // {
+  //   id: "segsehwe2ewr44",
+  //   name: "Не смотрим",
+  //   type: "image",
+  //   countDownload: "32"
+  // },
 ]
 
 @Component({
@@ -97,7 +101,6 @@ const files: Array<file> = [
   styleUrl: './room.component.scss'
 })
 export class RoomComponent implements OnInit{
-
   public typeModal = "settings";
   public modalSetting = false;
   modalSettings(state: boolean){
@@ -122,16 +125,18 @@ export class RoomComponent implements OnInit{
     ["image", "../../../../../assets/images/types/photo.svg"]
   ]);
 
-  public files = files;
-
-  constructor(private route: ActivatedRoute) {}
-
+  public files = files
+  
+  constructor(private route: ActivatedRoute, private filesService: FilesService, private apiService: ApiService) {}
+  
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.id = `${params.get("id")}`;
 
       this.modalSetting = false;
     });
+
+    this.apiService
   }
 
 }

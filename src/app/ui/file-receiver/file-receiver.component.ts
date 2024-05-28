@@ -31,11 +31,11 @@ export class FileReceiverComponent {
     event.stopPropagation();
     event.preventDefault();
 
-    const files = event.dataTransfer?.files;
+    const files = event.dataTransfer?.files[0];
     if(!files) return;
-    for (let i = 0; i < files.length; i++) {
-      this.fileQueue.items.add(files[i]);
-    }
+    // for (let i = 0; i < files.length; i++) {
+    //   this.fileQueue.items.add(files[i]);
+    // }
 
     console.log(this.fileQueue);
   }
@@ -48,7 +48,7 @@ export class FileReceiverComponent {
 
     if (!files) return;
 
-    this.apiService.toPostFiles(token,this.roomId, files)
+    this.apiService.toPostFiles(token,this.roomId, files[0])
     .subscribe(
       (response)=>{
         console.log(response);
@@ -62,7 +62,7 @@ export class FileReceiverComponent {
     const token = this.cookieService.getCookie("token");
     if (!token) {this.router.navigate(["/"]); return;}
 
-    this.apiService.toPostFiles(token,this.roomId,this.fileQueue.files)
+    this.apiService.toPostFiles(token,this.roomId,this.fileQueue.files[0])
     .subscribe(
       (response)=>{
         console.log(response);
