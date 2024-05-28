@@ -30,66 +30,6 @@ const files: Array<File> = [
     format: "video",
     downloads: 0
   }, 
-  // {
-  //   id: "srbr42ge23f",
-  //   name: "Резюме",
-  //   type: "pdf",
-  //   countDownload: "3"
-  // },
-  // {
-  //   id: "gseh5j54w",
-  //   name: "О глобальной слежке США",
-  //   type: "video",
-  //   countDownload: "0"
-  // },
-  // {
-  //   id: "segsehwe2ewr44",
-  //   name: "Не смотрим",
-  //   type: "image",
-  //   countDownload: "32"
-  // },
-  // {
-  //   id: "segsehwe2ewr44",
-  //   name: "Не смотрим",
-  //   type: "image",
-  //   countDownload: "32"
-  // },
-  // {
-  //   id: "gseh5j54w",
-  //   name: "О глобальной слежке США",
-  //   type: "video",
-  //   countDownload: "0"
-  // },
-  // {
-  //   id: "segsehwe2ewr44",
-  //   name: "Не смотрим",
-  //   type: "image",
-  //   countDownload: "32"
-  // },
-  // {
-  //   id: "segsehwe2ewr44",
-  //   name: "Не смотрим",
-  //   type: "image",
-  //   countDownload: "32"
-  // },
-  // {
-  //   id: "gseh5j54w",
-  //   name: "О глобальной слежке США",
-  //   type: "video",
-  //   countDownload: "0"
-  // },
-  // {
-  //   id: "segsehwe2ewr44",
-  //   name: "Не смотрим",
-  //   type: "image",
-  //   countDownload: "32"
-  // },
-  // {
-  //   id: "segsehwe2ewr44",
-  //   name: "Не смотрим",
-  //   type: "image",
-  //   countDownload: "32"
-  // },
 ]
 
 @Component({
@@ -162,12 +102,43 @@ export class RoomComponent implements OnInit{
         console.error(error);
 
         switch(error.status){
+          case 401:
+            this.router.navigate(["/"]);
+            break;
           default:
             this.errorService.setError("Ошибка подключения");
             break;
         }
 
         this.router.navigate(["/"]);
+      }
+    )
+  }
+
+  downloadFile(fileId: string){
+    const token = this.cookieService.getCookie("token");
+
+    if(!token){
+      this.router.navigate(["/"]);
+      return;
+    }
+
+    this.apiService.toGetFile(token, fileId)
+    .subscribe(
+      (response)=>{
+
+      },
+      (error: HttpErrorResponse)=>{
+        console.error(error);
+
+        switch(error.status){
+          case 401:
+            this.router.navigate(["/"]);
+            break;
+          default:
+            this.errorService.setError("Ошибка подключения");
+            break;
+        }
       }
     )
   }

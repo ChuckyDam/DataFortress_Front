@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="Room__container">
-            <div class="Room__file" *ngFor="let item of files">
+            <div class="Room__file" *ngFor="let item of files" (click)="downloadFile(item.id)">
 
                 <div class="Room__fileImage"
                     [style.background-image]="'url('+ images.get(item.format) || '' +')'"

@@ -127,6 +127,20 @@ export class ApiService {
     );
   }
 
+  toGetFile(token: string, fileId: string): Observable<any>{
+    const endpoint = "api/File/"
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      }),
+      responseType: "blob" as const
+    }
+
+    return this.http.get(`${this.apiURL}/${endpoint}${fileId}`, httpOptions)
+    .pipe(
+      timeout(50000)
+    );
+  }
   toGetFiles(token: string, roomId: string): Observable<any>{
     const endpoint = "api/Files/"
     const httpOptions ={
