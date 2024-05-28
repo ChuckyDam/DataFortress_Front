@@ -108,6 +108,29 @@ export class ApiService {
     );
   }
 
+  toPostFiles(token: string, roomId: string, files: FileList){
+    const endpoint = "api/Upload/";
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'multipart/form-data; boundary=----',
+        'Authorization': `Bearer ${token}`
+      })
+    };
+
+    console.log(files);
+
+    const formData = new FormData();
+    for (let index = 0; index < files.length; index++) {
+      const file = files[index];
+      formData.append("files[]",file, file.name);
+    }
+
+    return this.http.post(`${this.apiURL}/${endpoint}${roomId}`, formData, httpOptions)
+      .pipe(
+        timeout(5000)
+    );
+  }
+
   // // Отправка GET-запроса
   // get(endpoint: string, params?: any): Observable<any> {
   //   let queryString = '';

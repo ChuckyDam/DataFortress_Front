@@ -1,6 +1,8 @@
 import { CreateRoomComponent } from '@/app/ui/create-room/create-room.component';
+import { FileReceiverComponent } from '@/app/ui/file-receiver/file-receiver.component';
+import { ModalWindowComponent } from '@/app/ui/modal-window/modal-window.component';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 const typesFiles = ["video", "pdf", "xlsx", "image"] as const;
@@ -87,14 +89,30 @@ const files: Array<file> = [
   standalone: true,
   imports: [
     CommonModule,
-    CreateRoomComponent
+    CreateRoomComponent,
+    ModalWindowComponent,
+    FileReceiverComponent
   ],
   templateUrl: './room.component.html',
   styleUrl: './room.component.scss'
 })
 export class RoomComponent implements OnInit{
 
-  public id !: string|null;
+  public typeModal = "settings";
+  public modalSetting = false;
+  modalSettings(state: boolean){
+    this.modalSetting = state;
+  }
+  openModalSettings(){
+    this.typeModal = "settings";
+    this.modalSetting = true;
+  }
+  openModalAddFile(){
+    this.typeModal = "addFile";
+    this.modalSetting = true;
+  }
+
+  public id !: string;
 
   public types = typesFiles;
   public images = new Map([
@@ -110,7 +128,9 @@ export class RoomComponent implements OnInit{
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      this.id = params.get("id")
+      this.id = `${params.get("id")}`;
+
+      this.modalSetting = false;
     });
   }
 

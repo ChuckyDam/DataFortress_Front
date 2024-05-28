@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { ErrorBoxComponent } from './ui/error-box/error-box.component';
 import { Subscription } from 'rxjs';
 import { ErrorService } from './services/error.service';
@@ -30,11 +30,21 @@ export class AppComponent {
 
   textSubscription: Subscription;
 
-  constructor(private errorService: ErrorService) {
+  constructor(private errorService: ErrorService, private cookieService: CookieService, private router: Router) {
 
     this.textSubscription = this.errorService.text$.subscribe(text => {
       this.text = text
     });
+
+  }
+
+  ngOnInit(): void {
+
+    const token = this.cookieService.getCookie("token");
+    if(token){
+      this.router.navigate(["/rooms"]);
+      return;
+    }
 
   }
 

@@ -1,0 +1,35 @@
+.Modal{
+    display: none;
+    opacity: 0;
+    transition: .3s all;
+    &.active{
+        opacity: 1;
+    }
+
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+
+    align-items: center;
+    justify-content: center;
+    
+    &__container{
+        position: relative;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: var(--moreBlack);
+        backdrop-filter: blur(10px);
+        color: var(--blueWhite);
+    }
+    &__close{
+        cursor: pointer;
+        position: absolute;
+        top: 5px;
+        right: 5px;
+    }
+}

@@ -3,11 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-interface ChildProps {
-  valueInp: string;
-  id: string;
-}
-
 @Component({
   selector: 'app-input-auth',
   standalone: true,
@@ -18,7 +13,7 @@ interface ChildProps {
   templateUrl: './input-auth.component.html',
   styleUrl: './input-auth.component.scss'
 })
-export class InputAuthComponent implements ChildProps{
+export class InputAuthComponent{
 
   @Input() valueInp:string = ""; 
   @Output() valueInpChange = new EventEmitter<string>();

@@ -1,0 +1,6 @@
+<div #Modal class="Modal" (mouseup)="onClose($event)">
+    <div class="Modal__container">
+        <ng-content></ng-content>
+        <div (click)="onClose($event)" class="Modal__close">X</div>
+    </div>
+</div>

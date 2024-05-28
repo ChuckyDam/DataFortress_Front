@@ -5,7 +5,13 @@
 
 <ng-template #notVisible>
     <div class="Room">
-        <p>{{ id }}</p>
+        <div class="Room__mainRow">
+            <p>{{ id }}</p>
+            <div class="Room__btns">
+                <img (click)="openModalAddFile()" src="../../../../../assets/images/btnSvgs/archive-restore.svg" class="Room__settings">
+                <img (click)="openModalSettings()" src="../../../../../assets/images/btnSvgs/setting.svg" class="Room__settings">
+            </div>
+        </div>
         <div class="Room__container">
             <div class="Room__file" *ngFor="let item of files">
 
@@ -22,5 +28,11 @@
             </div>
         </div>
     </div>
+    <app-modal-window (openModal)="modalSettings($event)" [isModalOpen]="modalSetting">
+        <div *ngIf="typeModal === 'settings';">
+            Hello
+        </div>
+        <app-file-receiver *ngIf="typeModal === 'addFile';" [roomId]="id"></app-file-receiver>
+    </app-modal-window>
 </ng-template>
 
