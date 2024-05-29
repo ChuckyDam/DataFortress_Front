@@ -7,7 +7,7 @@ import { CreateRoomComponent } from '@/app/ui/create-room/create-room.component'
 import { FileReceiverComponent } from '@/app/ui/file-receiver/file-receiver.component';
 import { ModalWindowComponent } from '@/app/ui/modal-window/modal-window.component';
 import { CommonModule } from '@angular/common';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -30,7 +30,7 @@ const files: Array<File> = [
     room_id: "qqq",
     format: "video",
     downloads: 0
-  }, 
+  },
 ]
 
 @Component({
@@ -55,14 +55,14 @@ export class RoomComponent implements OnInit{
 
   public typeModal = "settings";
   public modalSetting = false;
-  modalSettings(state: boolean){
+  modalSettings(state: boolean) {
     this.modalSetting = state;
   }
-  openModalSettings(){
+  openModalSettings() {
     this.typeModal = "settings";
     this.modalSetting = true;
   }
-  openModalAddFile(){
+  openModalAddFile() {
     this.typeModal = "addFile";
     this.modalSetting = true;
   }
@@ -92,18 +92,18 @@ export class RoomComponent implements OnInit{
       (error: HttpErrorResponse)=>{
         console.error(error);
 
-        switch(error.status){
-          case 401:
-            this.router.navigate(["/"]);
-            break;
-          default:
-            this.errorService.setError("Ошибка подключения");
-            break;
-        }
+          switch (error.status) {
+            case 401:
+              this.router.navigate(["/"]);
+              break;
+            default:
+              this.errorService.setError("Ошибка подключения");
+              break;
+          }
 
-        this.router.navigate(["/"]);
-      }
-    )
+          this.router.navigate(["/"]);
+        }
+      )
   }
 
   public id !: string;
@@ -163,29 +163,66 @@ export class RoomComponent implements OnInit{
   downloadFile(fileId: string){
     const token = this.cookieService.getCookie("token");
 
-    if(!token){
+    if (!token) {
       this.router.navigate(["/"]);
       return;
     }
 
     this.apiService.toGetFile(token, fileId)
-    .subscribe(
-      (response)=>{
-        console.log(response);
-      },
-      (error: HttpErrorResponse)=>{
-        console.error(error);
+      .subscribe(
+        (response: HttpResponse<Blob>) => {
+          console.log(response.headers);
+          const contentDisposition = response.headers.get('content-disposition');
+          const fileName = this.getFileNameFromContentDisposition(contentDisposition);
+          if (response.body) {
+            const blob = new Blob([response.body], { type: 'application/octet-stream' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+          }
+          else {
+            console.error("error download file - empty response body")
+          }
+        },
+        (error: HttpErrorResponse) => {
+          console.error(error);
 
-        switch(error.status){
-          case 401:
-            this.router.navigate(["/"]);
-            break;
-          default:
-            this.errorService.setError("Ошибка подключения");
-            break;
+          switch (error.status) {
+            case 401:
+              this.router.navigate(["/"]);
+              break;
+            default:
+              this.errorService.setError("Ошибка подключения");
+              break;
+          }
         }
-      }
-    )
+      )
+  }
+
+  private getFileNameFromContentDisposition(contentDisposition: string | null): string {
+    if (!contentDisposition) return 'downloadedFile';
+
+    let fileName = 'downloadedFile';
+    const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+    const matches = filenameRegex.exec(contentDisposition);
+  
+    if (matches != null && matches[1]) {
+      fileName = matches[1].replace(/['"]/g, '');
+    }
+  
+    const filenameStarRegex = /filename\*=UTF-8''([^;\n]*)/;
+    const matchesStar = filenameStarRegex.exec(contentDisposition);
+  
+    if (matchesStar != null && matchesStar[1]) {
+      fileName = decodeURIComponent(matchesStar[1]);
+    }
+  
+    return fileName;
   }
 
 }

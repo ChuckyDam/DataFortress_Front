@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { retry, timeout } from 'rxjs/operators';
 
@@ -131,13 +131,11 @@ export class ApiService {
       headers: new HttpHeaders({
         'Authorization': `Bearer ${token}`
       }),
-      responseType: "blob" as const
+      responseType: 'blob' as 'json',
+      observe: 'response' as const
     }
 
-    return this.http.get(`${this.apiURL}/${endpoint}${fileId}`, httpOptions)
-    .pipe(
-      timeout(50000)
-    );
+    return this.http.get<Blob>(`${this.apiURL}/${endpoint}${fileId}`, httpOptions)
   }
   toGetFiles(token: string, roomId: string): Observable<any>{
     const endpoint = "api/Files/"
