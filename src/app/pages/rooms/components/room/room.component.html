@@ -6,13 +6,19 @@
 <ng-template #notVisible>
     <div class="Room">
         <div class="Room__mainRow">
-            <p>{{ id }}</p>
+            <p>{{ name }}</p>
             <div class="Room__btns">
                 <img (click)="openModalAddFile()" src="../../../../../assets/images/btnSvgs/archive-restore.svg" class="Room__settings">
                 <img (click)="openModalSettings()" src="../../../../../assets/images/btnSvgs/setting.svg" class="Room__settings">
             </div>
         </div>
-        <div class="Room__container">
+        <div *ngIf="isLoading" class="Room__loading">
+            <p>Loading...</p>
+        </div>
+        <div class="Room__empty" *ngIf="!isLoading && files.length === 0">
+            <p>Empty</p>
+        </div>
+        <div class="Room__container" *ngIf="!isLoading || files.length !== 0">
             <div class="Room__file" *ngFor="let item of files" (click)="downloadFile(item.id)">
 
                 <div class="Room__fileImage"
@@ -27,12 +33,23 @@
                 </div>
             </div>
         </div>
+
     </div>
-    <app-modal-window (openModal)="modalSettings($event)" [isModalOpen]="modalSetting">
-        <div *ngIf="typeModal === 'settings';">
-            Hello
+    <app-modal-window (openModal)="modalSettings($event)" [isModalOpen]="modalSetting" class="Modal">
+        <div *ngIf="typeModal === 'sure';" class="Modal__sure">
+            <p>Вы уверены?</p>
+            <div class="Room__flex">
+                <button>Нет</button>
+                <button class="redBtn" (click)="onDelRoom()">Да</button>
+            </div>
+        </div>
+        <div *ngIf="typeModal === 'settings';" class="Room__modalSettings">
+            <button class="redBtn" (click)="ModalSure()">Удалить комнату</button>
+            <button>Добавить пользователя</button>
+            <button>Все пользователи</button>
         </div>
         <app-file-receiver *ngIf="typeModal === 'addFile';" [roomId]="id"></app-file-receiver>
+
     </app-modal-window>
 </ng-template>
 

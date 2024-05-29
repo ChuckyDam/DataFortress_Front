@@ -116,8 +116,6 @@ export class ApiService {
       })
     };
 
-    console.log(file);
-
     const formData = new FormData() 
     formData.append("file", file, file.name)
 
@@ -148,11 +146,20 @@ export class ApiService {
         'Authorization': `Bearer ${token}`
       })
     }
-    return this.http.get(`${this.apiURL}/${endpoint}${roomId}`, httpOptions)
-      .pipe(
-        timeout(5000)
-      );
+    return this.http.get(`${this.apiURL}/${endpoint}${roomId}`, httpOptions);
   }
+
+  toDeleteRoom(token: string, roomId: string){
+    const endpoint = "api/Room/";
+    const httpOptions ={
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    }
+
+    return this.http.delete(`${this.apiURL}/${endpoint}${roomId}`, httpOptions);
+  }
+
   // // Отправка GET-запроса
   // get(endpoint: string, params?: any): Observable<any> {
   //   let queryString = '';

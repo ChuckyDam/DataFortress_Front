@@ -2,6 +2,7 @@ import { ApiService } from '@/app/services/api.service';
 import { CookieService } from '@/app/services/cookie.service';
 import { ErrorService } from '@/app/services/error.service';
 import { FilesService } from '@/app/services/files.service';
+import { Room, RoomsService } from '@/app/services/rooms.service';
 import { CreateRoomComponent } from '@/app/ui/create-room/create-room.component';
 import { FileReceiverComponent } from '@/app/ui/file-receiver/file-receiver.component';
 import { ModalWindowComponent } from '@/app/ui/modal-window/modal-window.component';
@@ -45,6 +46,13 @@ const files: Array<File> = [
   styleUrl: './room.component.scss'
 })
 export class RoomComponent implements OnInit{
+
+  constructor(private route: ActivatedRoute, private filesService: FilesService, private apiService: ApiService, private cookieService: CookieService, private router: Router, private errorService: ErrorService, private roomsService: RoomsService) {
+    this.subData = this.filesService.files.subscribe(files => {
+      this.files = files;
+    });
+  }
+
   public typeModal = "settings";
   public modalSetting = false;
   modalSettings(state: boolean){
@@ -58,45 +66,28 @@ export class RoomComponent implements OnInit{
     this.typeModal = "addFile";
     this.modalSetting = true;
   }
-
-  public id !: string;
-
-  public types = typesFiles;
-  public images = new Map([
-    ["video", "../../../../../assets/images/types/videocam.svg"],
-    ["pdf", "../../../../../assets/images/types/picture_as_pdf.svg"],
-    ["xlsx", "../../../../../assets/images/types/table_chart.svg"],
-    ["image", "../../../../../assets/images/types/photo.svg"]
-  ]);
-
-  public files : File[] = []
-  public subData!: Subscription;
-
-  constructor(private route: ActivatedRoute, private filesService: FilesService, private apiService: ApiService, private cookieService: CookieService, private router: Router, private errorService: ErrorService) {
-    
-    this.subData = this.filesService.files.subscribe(files => {
-      this.files = files;
-    });
+  ModalSure(){
+    this.typeModal = "sure";
   }
-  
-  ngOnInit(): void {
+  onDelRoom(){
     const token = this.cookieService.getCookie("token");
-
     if(!token){
       this.router.navigate(["/"]);
       return;
     }
 
-    this.route.paramMap.subscribe(params => {
-      this.id = `${params.get("id")}`;
+    this.modalSetting = false;
+    let rooms: Room[] = [];
+    this.roomsService.rooms.forEach((value)=>{
+      rooms = value.filter((room)=>room.id!==this.id);
+    })
+    this.roomsService.setRooms(rooms);
+    this.router.navigate(["/rooms"]);
 
-      this.modalSetting = false;
-    });
-
-    this.apiService.toGetFiles(token, this.id)
+    this.apiService.toDeleteRoom(token, this.id)
     .subscribe(
       (response)=>{
-        this.filesService.setFiles(response);
+        console.log(response);
       },
       (error: HttpErrorResponse)=>{
         console.error(error);
@@ -115,6 +106,60 @@ export class RoomComponent implements OnInit{
     )
   }
 
+  public id !: string;
+  public name!: string;
+
+  public isLoading:boolean = false;
+
+  public images = new Map([
+    ["video/quicktime", "../../../../../assets/images/types/videocam.svg"],
+    ["pdf", "../../../../../assets/images/types/picture_as_pdf.svg"],
+    ["xlsx", "../../../../../assets/images/types/table_chart.svg"],
+    ["image/jpeg", "../../../../../assets/images/types/photo.svg"]
+  ]);
+
+  public files : File[] = []
+  public subData!: Subscription;
+  
+  ngOnInit(): void {
+
+    this.route.paramMap.subscribe(params => {
+      const token = this.cookieService.getCookie("token");
+      if(!token){
+        this.router.navigate(["/"]);
+        return;
+      }
+
+      this.id = `${params.get("id")?.split("?=")[0]}`;
+      this.name = `${params.get("id")?.split("?=")[1]}`;
+      this.modalSetting = false;
+
+      this.filesService.setFiles([]);
+      this.isLoading = true;
+      this.apiService.toGetFiles(token, this.id)
+      .subscribe(
+        (response)=>{
+          this.isLoading = false;
+          this.filesService.setFiles(response);
+        },
+        (error: HttpErrorResponse)=>{
+          console.error(error);
+  
+          switch(error.status){
+            case 401:
+              this.router.navigate(["/"]);
+              break;
+            default:
+              this.errorService.setError("Ошибка подключения");
+              break;
+          }
+  
+          this.router.navigate(["/"]);
+        }
+      )
+    });
+  }
+
   downloadFile(fileId: string){
     const token = this.cookieService.getCookie("token");
 
@@ -126,7 +171,7 @@ export class RoomComponent implements OnInit{
     this.apiService.toGetFile(token, fileId)
     .subscribe(
       (response)=>{
-
+        console.log(response);
       },
       (error: HttpErrorResponse)=>{
         console.error(error);

@@ -41,7 +41,6 @@ export class ModalWindowComponent implements OnChanges{
           })
         }
       }
-      console.log(this.isModalOpen);
     }
   }
 
