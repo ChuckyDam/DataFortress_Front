@@ -1,3 +1,4 @@
+import { RoomService } from '@/app/services/room.service';
 import { Room } from '@/app/services/rooms.service';
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
@@ -17,7 +18,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class SearchRoomsComponent {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private roomService: RoomService) {}
 
   @Input() data: Room[] = [];
 
@@ -27,6 +28,10 @@ export class SearchRoomsComponent {
     return this.data.filter(data => {
       return data.name.toLowerCase().indexOf(this.searchText.toLowerCase()) !== -1;
     });
+  }
+
+  inRoom(room: Room){
+    this.roomService.setRole(room.userRole);
   }
 
   addClick(){

@@ -102,10 +102,7 @@ export class ApiService {
       })
     };
 
-    return this.http.post(`${this.apiURL}/${endpoint}?name=${getName}`, {}, httpOptions)
-      .pipe(
-        timeout(5000)
-    );
+    return this.http.post(`${this.apiURL}/${endpoint}?name=${getName}`, {}, httpOptions);
   }
 
   toPostFiles(token: string, roomId: string, file: File){
@@ -156,6 +153,25 @@ export class ApiService {
     }
 
     return this.http.delete(`${this.apiURL}/${endpoint}${roomId}`, httpOptions);
+  }
+
+  toAddUser(token: string, roomId: string, email: string, role: number = 0){
+
+    const endpoint = "api/Room/invite";
+    const httpOptions ={
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    }
+    const body = {
+      "rid": roomId,
+      "userLogin": email,
+      "role": role
+    }
+
+    return this.http.patch(`${this.apiURL}/${endpoint}`, JSON.stringify(body), httpOptions);
+
   }
 
   // // Отправка GET-запроса

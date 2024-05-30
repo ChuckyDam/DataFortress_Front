@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 export interface Room {
   id: string;
   name: string;
+  userRole: string;
 }
 
 @Injectable({

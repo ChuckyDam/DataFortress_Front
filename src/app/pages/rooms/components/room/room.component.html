@@ -37,19 +37,35 @@
 
     </div>
     <app-modal-window (openModal)="modalSettings($event)" [isModalOpen]="modalSetting" class="Modal">
+
         <div *ngIf="typeModal === 'sure';" class="Modal__sure">
             <p>Вы уверены?</p>
             <div class="Room__flex">
-                <button (click)="closeModal()">Нет</button>
+                <button (click)="backSettingModal()">Нет</button>
                 <button class="redBtn" (click)="onDelRoom()">Да</button>
             </div>
         </div>
-        <div *ngIf="typeModal === 'settings';" class="Room__modalSettings">
-            <button>Добавить пользователя</button>
-            <button>Все пользователи</button>
-            <button class="redBtn" (click)="ModalSure()">Удалить комнату</button>
-        </div>
         <app-file-receiver *ngIf="typeModal === 'addFile';" [roomId]="id"></app-file-receiver>
+
+        <div *ngIf="typeModal === 'settings';" class="Room__modalSettings">
+            <button *ngIf="role == '2' || role == '1'" (click)="ModalAddUser()">Добавить пользователя</button>
+            <button>Все пользователи</button>
+            <button *ngIf="role == '0' || role == '1'" class="redBtn">Покинуть комнату</button>
+            <button *ngIf="role == '2'" class="redBtn" (click)="ModalSure()">Удалить комнату</button>
+        </div>
+
+        <div *ngIf="typeModal === 'addUser';">
+            <p>Добавить пользователя: </p>
+            <form (submit)="onAddUser($event)" class="Modal__addUser">
+                <app-input-auth
+                    type="email"
+                    [name]="'email'"
+                    [id]="'emailAdd'"
+                    [(valueInp)]="email"
+                >Почта: </app-input-auth>
+                <app-button-auth>Добавить</app-button-auth>
+            </form>
+        </div>
 
     </app-modal-window>
 </ng-template>

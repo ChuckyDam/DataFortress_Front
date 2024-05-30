@@ -10,7 +10,7 @@
 
     <div class="Search__rooms">
         <ng-container *ngFor="let item of filteredData()">
-            <div class="Search__room" [routerLink]="['/rooms', item.id + '?=' + item.name]" routerLinkActive="active">
+            <div (click)="inRoom(item)" class="Search__room" [routerLink]="['/rooms', item.id + '?=' + item.name]" routerLinkActive="active">
                 <p>{{item.name}}</p>
             </div>
         </ng-container>

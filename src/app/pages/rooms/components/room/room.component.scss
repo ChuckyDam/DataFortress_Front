@@ -169,4 +169,12 @@
         flex-direction: column;
         gap: 5px;
     }
+
+    &__addUser{
+        padding-top: 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: 10px;
+    }
 }

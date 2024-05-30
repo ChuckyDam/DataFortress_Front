@@ -2,9 +2,12 @@ import { ApiService } from '@/app/services/api.service';
 import { CookieService } from '@/app/services/cookie.service';
 import { ErrorService } from '@/app/services/error.service';
 import { FilesService } from '@/app/services/files.service';
+import { RoomService } from '@/app/services/room.service';
 import { Room, RoomsService } from '@/app/services/rooms.service';
+import { ButtonAuthComponent } from '@/app/ui/button-auth/button-auth.component';
 import { CreateRoomComponent } from '@/app/ui/create-room/create-room.component';
 import { FileReceiverComponent } from '@/app/ui/file-receiver/file-receiver.component';
+import { InputAuthComponent } from '@/app/ui/input-auth/input-auth.component';
 import { ModalWindowComponent } from '@/app/ui/modal-window/modal-window.component';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
@@ -40,18 +43,26 @@ const files: Array<File> = [
     CommonModule,
     CreateRoomComponent,
     ModalWindowComponent,
-    FileReceiverComponent
+    FileReceiverComponent,
+    InputAuthComponent,
+    ButtonAuthComponent
   ],
   templateUrl: './room.component.html',
   styleUrl: './room.component.scss'
 })
 export class RoomComponent implements OnInit{
 
-  constructor(private route: ActivatedRoute, private filesService: FilesService, private apiService: ApiService, private cookieService: CookieService, private router: Router, private errorService: ErrorService, private roomsService: RoomsService) {
+  constructor(private roomService: RoomService, private route: ActivatedRoute, private filesService: FilesService, private apiService: ApiService, private cookieService: CookieService, private router: Router, private errorService: ErrorService, private roomsService: RoomsService) {
     this.subData = this.filesService.files.subscribe(files => {
       this.files = files;
     });
+
+    this.subRole = this.roomService.role.subscribe(role => {
+      this.role = role;
+    })
   }
+
+  public email = "";
 
   public typeModal = "settings";
   public modalSetting = false;
@@ -68,6 +79,9 @@ export class RoomComponent implements OnInit{
   }
   ModalSure(){
     this.typeModal = "sure";
+  }
+  ModalAddUser(){
+    this.typeModal = "addUser";
   }
   onDelRoom(){
     const token = this.cookieService.getCookie("token");
@@ -105,8 +119,39 @@ export class RoomComponent implements OnInit{
         }
       )
   }
-  closeModal(){
-    this.modalSetting = false;
+  backSettingModal(){
+    this.typeModal = "settings";
+  }
+  onAddUser(event: Event){
+    event.preventDefault();
+    const token = this.cookieService.getCookie("token");
+    if(!token){
+      this.router.navigate(["/"]);
+      return;
+    }
+
+    this.apiService.toAddUser(token, this.id, this.email)
+    .subscribe(
+      (response)=>{
+        this.backSettingModal();
+        console.log(response);
+
+      },
+      (error: HttpErrorResponse)=>{
+        console.error(error);
+
+        switch(error.status){
+          case 401:
+            this.router.navigate(["/"]);
+            break;
+          default:
+            this.errorService.setError("Ошибка подключения");
+            break;
+        }
+      }
+    )
+
+    console.log(this.email);
   }
 
   public id !: string;
@@ -123,6 +168,9 @@ export class RoomComponent implements OnInit{
 
   public files : File[] = []
   public subData!: Subscription;
+
+  public role: string = '0';
+  public subRole!: Subscription;
   
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -136,12 +184,15 @@ export class RoomComponent implements OnInit{
       this.modalSetting = false;
 
       this.filesService.setFiles([]);
-      this.isLoading = true;
       this.getFiles();
     });
   }
 
   protected getFiles(){
+    this.isLoading = true;
+    this.filesService.setFiles([]);
+
+
     const token = this.cookieService.getCookie("token");
     if(!token){
       this.router.navigate(["/"]);

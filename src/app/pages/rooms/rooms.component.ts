@@ -6,12 +6,7 @@ import { ApiService } from '@/app/services/api.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorService } from '@/app/services/error.service';
 import { Subscription } from 'rxjs';
-import { RoomsService } from '@/app/services/rooms.service';
-
-interface Room {
-  id: string;
-  name: string;
-}
+import { Room, RoomsService } from '@/app/services/rooms.service';
 
 @Component({
   selector: 'app-rooms',
