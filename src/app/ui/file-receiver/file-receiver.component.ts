@@ -31,13 +31,11 @@ export class FileReceiverComponent {
     event.stopPropagation();
     event.preventDefault();
 
-    const files = event.dataTransfer?.files[0];
+    const files = event.dataTransfer?.files;
     if(!files) return;
-    // for (let i = 0; i < files.length; i++) {
-    //   this.fileQueue.items.add(files[i]);
-    // }
-
-    console.log(this.fileQueue);
+    for (let i = 0; i < files.length; i++) {
+      this.fileQueue.items.add(files[i]);
+    }
   }
   onChange(event: Event){
     const token = this.cookieService.getCookie("token");
@@ -47,30 +45,35 @@ export class FileReceiverComponent {
     console.log(files)
 
     if (!files) return;
+    for (let i = 0; i < files.length; i++) {
+      this.fileQueue.items.add(files[i]);
+    }
 
-    this.apiService.toPostFiles(token,this.roomId, files[0])
-    .subscribe(
-      (response)=>{
-        console.log(response);
-      },
-      (error: HttpErrorResponse)=>{
-        console.log(error);
-      }
-    )
+    // this.apiService.toPostFiles(token,this.roomId, files[0])
+    // .subscribe(
+    //   (response)=>{
+    //     console.log(response);
+    //   },
+    //   (error: HttpErrorResponse)=>{
+    //     console.log(error);
+    //   }
+    // )
   }
   onSend(){
     const token = this.cookieService.getCookie("token");
     if (!token) {this.router.navigate(["/"]); return;}
 
-    this.apiService.toPostFiles(token,this.roomId,this.fileQueue.files[0])
-    .subscribe(
-      (response)=>{
-        console.log(response);
-      },
-      (error: HttpErrorResponse)=>{
-        console.log(error);
-      }
-    )
+    for (let i = 0; i < this.fileQueue.files.length; i++) {
+      this.apiService.toPostFiles(token,this.roomId,this.fileQueue.files[i])
+      .subscribe(
+        (response)=>{
+          console.log(response);
+        },
+        (error: HttpErrorResponse)=>{
+          console.log(error);
+        }
+      )
+    }
 
   }
 }

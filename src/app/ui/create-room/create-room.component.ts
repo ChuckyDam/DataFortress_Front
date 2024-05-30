@@ -35,7 +35,7 @@ export class CreateRoomComponent {
     this.apiService.toCreateRoom(token, this.name).subscribe(
       (room: any)=>{
         this.roomsService.addNewRoom(room)
-        this.router.navigate(["/rooms/", room.id]);
+        this.router.navigate(["/rooms/", room.id + '?=' + this.name]);
       },
       (error: HttpErrorResponse)=>{
         console.log(error)

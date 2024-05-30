@@ -105,6 +105,9 @@ export class RoomComponent implements OnInit{
         }
       )
   }
+  closeModal(){
+    this.modalSetting = false;
+  }
 
   public id !: string;
   public name!: string;
@@ -122,42 +125,48 @@ export class RoomComponent implements OnInit{
   public subData!: Subscription;
   
   ngOnInit(): void {
-
     this.route.paramMap.subscribe(params => {
-      const token = this.cookieService.getCookie("token");
-      if(!token){
-        this.router.navigate(["/"]);
+
+      this.id = `${params.get("id")?.split("?=")[0]}`;
+      if(this.id === "addroom"){
         return;
       }
 
-      this.id = `${params.get("id")?.split("?=")[0]}`;
       this.name = `${params.get("id")?.split("?=")[1]}`;
       this.modalSetting = false;
 
       this.filesService.setFiles([]);
       this.isLoading = true;
-      this.apiService.toGetFiles(token, this.id)
-      .subscribe(
-        (response)=>{
-          this.isLoading = false;
-          this.filesService.setFiles(response);
-        },
-        (error: HttpErrorResponse)=>{
-          console.error(error);
-  
-          switch(error.status){
-            case 401:
-              this.router.navigate(["/"]);
-              break;
-            default:
-              this.errorService.setError("Ошибка подключения");
-              break;
-          }
-  
-          this.router.navigate(["/"]);
-        }
-      )
+      this.getFiles();
     });
+  }
+
+  protected getFiles(){
+    const token = this.cookieService.getCookie("token");
+    if(!token){
+      this.router.navigate(["/"]);
+      return;
+    }
+
+    this.apiService.toGetFiles(token, this.id)
+    .subscribe(
+      (response)=>{
+        this.isLoading = false;
+        this.filesService.setFiles(response);
+      },
+      (error: HttpErrorResponse)=>{
+        console.error(error);
+
+        switch(error.status){
+          case 401:
+            this.router.navigate(["/"]);
+            break;
+          default:
+            this.errorService.setError("Ошибка подключения");
+            break;
+        }
+      }
+    )
   }
 
   downloadFile(fileId: string){

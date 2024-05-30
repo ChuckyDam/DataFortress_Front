@@ -8,7 +8,8 @@
         <div class="Room__mainRow">
             <p>{{ name }}</p>
             <div class="Room__btns">
-                <img (click)="openModalAddFile()" src="../../../../../assets/images/btnSvgs/archive-restore.svg" class="Room__settings">
+                <img (click)="getFiles()" src="../../../../../assets/images/btnSvgs/refresh-svgrepo-com.svg" alt="Room__settings">
+                <img (click)="openModalAddFile()" src="../../../../../assets/images/btnSvgs/archive-restore.svg" class="Room__addFiles">
                 <img (click)="openModalSettings()" src="../../../../../assets/images/btnSvgs/setting.svg" class="Room__settings">
             </div>
         </div>
@@ -39,14 +40,14 @@
         <div *ngIf="typeModal === 'sure';" class="Modal__sure">
             <p>Вы уверены?</p>
             <div class="Room__flex">
-                <button>Нет</button>
+                <button (click)="closeModal()">Нет</button>
                 <button class="redBtn" (click)="onDelRoom()">Да</button>
             </div>
         </div>
         <div *ngIf="typeModal === 'settings';" class="Room__modalSettings">
-            <button class="redBtn" (click)="ModalSure()">Удалить комнату</button>
             <button>Добавить пользователя</button>
             <button>Все пользователи</button>
+            <button class="redBtn" (click)="ModalSure()">Удалить комнату</button>
         </div>
         <app-file-receiver *ngIf="typeModal === 'addFile';" [roomId]="id"></app-file-receiver>
 
