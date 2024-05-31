@@ -174,6 +174,17 @@ export class ApiService {
 
   }
 
+  toGetUsers(token: string, roomId: string){
+    const endpoint = "api/Room/users/";
+    const httpOptions ={
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+      })
+    }
+
+    return this.http.get(`${this.apiURL}/${endpoint}${roomId}`, httpOptions);
+  }
+
   // // Отправка GET-запроса
   // get(endpoint: string, params?: any): Observable<any> {
   //   let queryString = '';

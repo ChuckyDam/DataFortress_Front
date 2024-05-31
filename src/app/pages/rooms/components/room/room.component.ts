@@ -26,15 +26,11 @@ interface File {
   downloads: number;
 }
 
-const files: Array<File> = [
-  {
-    id: "auwgfao832o",
-    name: "Как Сергей спит",
-    room_id: "qqq",
-    format: "video",
-    downloads: 0
-  },
-]
+interface User {
+  id: string;
+  login: string;
+  userName: string;
+}
 
 @Component({
   selector: 'app-room',
@@ -82,6 +78,24 @@ export class RoomComponent implements OnInit{
   }
   ModalAddUser(){
     this.typeModal = "addUser";
+  }
+  ModalUsers(){
+    const token = this.cookieService.getCookie("token");
+    if(!token){
+      this.router.navigate(["/"]);
+      return;
+    }
+
+    this.typeModal = "users";
+    this.apiService.toGetUsers(token, this.id)
+    .subscribe(
+      (response: any)=>{
+        this.users = response;
+      },
+      (error: HttpErrorResponse)=>{
+        console.log(error);
+      }
+    )
   }
   onDelRoom(){
     const token = this.cookieService.getCookie("token");
@@ -153,6 +167,12 @@ export class RoomComponent implements OnInit{
 
     console.log(this.email);
   }
+  onDelUser(id: string){
+    console.log(id)
+  }
+
+
+  public users : User[] = [];
 
   public id !: string;
   public name!: string;
@@ -171,9 +191,13 @@ export class RoomComponent implements OnInit{
 
   public role: string = '0';
   public subRole!: Subscription;
+
+  public subFiles : Subscription|undefined;
   
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
+      if(this.subFiles) {this.subFiles.unsubscribe();}
+      
 
       this.id = `${params.get("id")?.split("?=")[0]}`;
       if(this.id === "addroom"){
@@ -199,7 +223,7 @@ export class RoomComponent implements OnInit{
       return;
     }
 
-    this.apiService.toGetFiles(token, this.id)
+    this.subFiles = this.apiService.toGetFiles(token, this.id)
     .subscribe(
       (response)=>{
         this.isLoading = false;
@@ -283,6 +307,12 @@ export class RoomComponent implements OnInit{
     }
   
     return fileName;
+  }
+
+  ngOnDestroy(): void {
+    this.subData.unsubscribe();
+    this.subRole.unsubscribe();
+    if(this.subFiles) {this.subFiles.unsubscribe();}
   }
 
 }

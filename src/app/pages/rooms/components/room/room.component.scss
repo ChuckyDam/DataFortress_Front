@@ -177,4 +177,38 @@
         flex-direction: column;
         gap: 10px;
     }
+
+    &__allUsers{
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        max-height: 200px;
+        overflow-y: auto;
+        &::-webkit-scrollbar {
+            width: 3px;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background-color: var(--blackBlur);
+            border-radius: 5px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background-color: var(--blueBlack);
+        }
+    }
+    &__userBox{
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+    }
+    &__btnDel{
+        padding: 0px 5px;
+        color: var(--blueWhite);
+        background-color: var(--red);
+        border-radius: 5px;
+        cursor: pointer;
+    }
 }

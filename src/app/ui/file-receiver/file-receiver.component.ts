@@ -21,7 +21,12 @@ export class FileReceiverComponent {
 
   constructor(private cookieService: CookieService, private apiService: ApiService, private router: Router) {}
 
-  fileQueue = new DataTransfer();
+  public fileQueue = new DataTransfer();
+  public files = Array.from(this.fileQueue.files);
+
+  updateFiles(){
+    this.files = Array.from(this.fileQueue.files);
+  }
 
   onDragover(event:DragEvent){
     event.stopPropagation();
@@ -36,7 +41,9 @@ export class FileReceiverComponent {
     for (let i = 0; i < files.length; i++) {
       this.fileQueue.items.add(files[i]);
     }
+    this.updateFiles();
   }
+
   onChange(event: Event){
     const token = this.cookieService.getCookie("token");
     if (!token) {this.router.navigate(["/"]); return;}
@@ -48,17 +55,8 @@ export class FileReceiverComponent {
     for (let i = 0; i < files.length; i++) {
       this.fileQueue.items.add(files[i]);
     }
-
-    // this.apiService.toPostFiles(token,this.roomId, files[0])
-    // .subscribe(
-    //   (response)=>{
-    //     console.log(response);
-    //   },
-    //   (error: HttpErrorResponse)=>{
-    //     console.log(error);
-    //   }
-    // )
   }
+
   onSend(){
     const token = this.cookieService.getCookie("token");
     if (!token) {this.router.navigate(["/"]); return;}
@@ -75,5 +73,7 @@ export class FileReceiverComponent {
       )
     }
 
+    this.fileQueue = new DataTransfer();
+    this.updateFiles();
   }
 }

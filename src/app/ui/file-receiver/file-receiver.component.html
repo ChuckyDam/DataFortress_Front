@@ -1,8 +1,11 @@
 
 <div class="Drop_zone" (dragover)="onDragover($event)" (drop)="onDrop($event)" #Drop_zone>
-    <p>file-receiver works!</p>
+    <p>Перетащите файлы для загрузки</p>
 
-    <input type="file" (change)="onChange($event)">
+    <!-- <input type="file" (change)="onChange($event)"> -->
+    <div *ngFor="let item of files" class="Drop_zone__files">
+        {{item.name}}
+    </div>
 
     <button *ngIf="fileQueue.files.length > 0" (click)="onSend()">Отправить</button>
 </div>

@@ -1,7 +1,7 @@
 .Drop_zone {
-    width: 200px;
-    height: 200px;
-    border: 1px solid #000;
+    padding: 10px;
+    min-width: 200px;
+    min-height: 200px;
+    border: 1px solid var(--blueWhite);
     text-align: center;
-    padding-top: 50px;
 }
