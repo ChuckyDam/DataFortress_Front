@@ -256,8 +256,7 @@ export class RoomComponent implements OnInit{
       .subscribe(
         (response: HttpResponse<Blob>) => {
           console.log(response.headers);
-          const contentDisposition = response.headers.get('content-disposition');
-          const fileName = this.getFileNameFromContentDisposition(contentDisposition);
+          const fileName = this.filesService.getFileName(fileId);
           if (response.body) {
             const blob = new Blob([response.body], { type: 'application/octet-stream' });
             const url = window.URL.createObjectURL(blob);
@@ -286,27 +285,6 @@ export class RoomComponent implements OnInit{
           }
         }
       )
-  }
-
-  private getFileNameFromContentDisposition(contentDisposition: string | null): string {
-    if (!contentDisposition) return 'downloadedFile';
-
-    let fileName = 'downloadedFile';
-    const filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-    const matches = filenameRegex.exec(contentDisposition);
-  
-    if (matches != null && matches[1]) {
-      fileName = matches[1].replace(/['"]/g, '');
-    }
-  
-    const filenameStarRegex = /filename\*=UTF-8''([^;\n]*)/;
-    const matchesStar = filenameStarRegex.exec(contentDisposition);
-  
-    if (matchesStar != null && matchesStar[1]) {
-      fileName = decodeURIComponent(matchesStar[1]);
-    }
-  
-    return fileName;
   }
 
   ngOnDestroy(): void {

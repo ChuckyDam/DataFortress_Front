@@ -21,4 +21,7 @@ export class FilesService {
   setFiles(items: File[]){
     this._files.next([...items]);
   }
+  getFileName(id: string): string{
+    return this._files.value.find(x => x.id == id)!.name;
+  }
 }
