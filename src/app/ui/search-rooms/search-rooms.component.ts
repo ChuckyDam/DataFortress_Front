@@ -1,3 +1,4 @@
+import { CookieService } from '@/app/services/cookie.service';
 import { RoomService } from '@/app/services/room.service';
 import { Room } from '@/app/services/rooms.service';
 import { CommonModule } from '@angular/common';
@@ -18,7 +19,7 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class SearchRoomsComponent {
 
-  constructor(private router: Router, private roomService: RoomService) {}
+  constructor(private router: Router, private roomService: RoomService, private cookieService: CookieService) {}
 
   @Input() data: Room[] = [];
 
@@ -36,6 +37,11 @@ export class SearchRoomsComponent {
 
   addClick(){
     this.router.navigate(["/rooms/addroom"])
+  }
+
+  exit(){
+    this.cookieService.deleteCookie("token");
+    this.router.navigate(["/"]);
   }
 
 }

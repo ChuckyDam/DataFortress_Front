@@ -101,5 +101,10 @@
         }
     }
 
-
+    &__exit{
+        padding: 3px 5px;
+        width: fit-content;
+        color: var(--red);
+        cursor: pointer;
+    }
 }

@@ -43,5 +43,10 @@ export class CookieService {
         document.cookie = updatedCookie;
       }
 
+    deleteCookie(name: string) {
+      this.setCookie(name, "", {
+        'max-age': -1
+      })
+    }
 }
 

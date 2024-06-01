@@ -67,6 +67,7 @@ export class RoomsComponent implements OnInit{
   }
 
   ngOnDestroy(): void {
+    this.roomsService.setRooms([]);
     this.subData.unsubscribe();
   }
 }

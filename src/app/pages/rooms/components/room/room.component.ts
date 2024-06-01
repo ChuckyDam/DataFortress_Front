@@ -167,8 +167,23 @@ export class RoomComponent implements OnInit{
 
     console.log(this.email);
   }
-  onDelUser(id: string){
-    console.log(id)
+  onDelUser(userId: string){
+    const token = this.cookieService.getCookie("token");
+    if(!token){
+      this.router.navigate(["/"]);
+      return;
+    }
+
+    this.users = this.users.filter((user)=>user.id !== userId);
+    this.apiService.toKickUser(token,this.id,userId)
+    .subscribe(
+      (response)=>{
+        console.log(response);
+      },
+      (error: HttpErrorResponse)=>{
+        console.log(error);
+      }
+    )
   }
 
 
@@ -189,7 +204,7 @@ export class RoomComponent implements OnInit{
   public files : File[] = []
   public subData!: Subscription;
 
-  public role: string = '0';
+  public role: string = '2';
   public subRole!: Subscription;
 
   public subFiles : Subscription|undefined;
@@ -198,6 +213,7 @@ export class RoomComponent implements OnInit{
     this.route.paramMap.subscribe(params => {
       if(this.subFiles) {this.subFiles.unsubscribe();}
       
+      this.users = [];
 
       this.id = `${params.get("id")?.split("?=")[0]}`;
       if(this.id === "addroom"){

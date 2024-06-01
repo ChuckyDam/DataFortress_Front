@@ -185,6 +185,24 @@ export class ApiService {
     return this.http.get(`${this.apiURL}/${endpoint}${roomId}`, httpOptions);
   }
 
+  toKickUser(token: string, roomId: string, userId: string){
+
+    const endpoint = "api/Room/remove";
+    const httpOptions ={
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      })
+    }
+    const body = {
+      "rid": roomId,
+      "uid": userId,
+    }
+
+    return this.http.patch(`${this.apiURL}/${endpoint}`, JSON.stringify(body), httpOptions);
+
+  }
+
   // // Отправка GET-запроса
   // get(endpoint: string, params?: any): Observable<any> {
   //   let queryString = '';
