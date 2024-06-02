@@ -87,6 +87,7 @@ export class RoomComponent implements OnInit{
     }
 
     this.typeModal = "users";
+
     this.apiService.toGetUsers(token, this.id)
     .subscribe(
       (response: any)=>{
@@ -185,7 +186,27 @@ export class RoomComponent implements OnInit{
       }
     )
   }
+  getURLformat(format: string){
+    const images = new Map([
+      ["video", "../../../../../assets/images/types/videocam.svg"],
+      ["pdf", "../../../../../assets/images/types/picture_as_pdf.svg"],
+      ["xlsx", "../../../../../assets/images/types/table_chart.svg"],
+      ["image", "../../../../../assets/images/types/photo.svg"],
+      ["audio", "../../../../../assets/images/types/audio-svgrepo-com.svg"]
+    ]);
 
+    if(/^image\/.+$/.test(format)){
+      return images.get("image");
+    }
+    if(/^video\/.+$/.test(format)){
+      return images.get("video");
+    }
+    if(/^audio\/.+$/.test(format)){
+      return images.get("audio");
+    }
+
+    return "../../../../../assets/images/types/files-svgrepo-com.svg";
+  }
 
   public users : User[] = [];
 
@@ -193,13 +214,6 @@ export class RoomComponent implements OnInit{
   public name!: string;
 
   public isLoading:boolean = false;
-
-  public images = new Map([
-    ["video/quicktime", "../../../../../assets/images/types/videocam.svg"],
-    ["pdf", "../../../../../assets/images/types/picture_as_pdf.svg"],
-    ["xlsx", "../../../../../assets/images/types/table_chart.svg"],
-    ["image/jpeg", "../../../../../assets/images/types/photo.svg"]
-  ]);
 
   public files : File[] = []
   public subData!: Subscription;
@@ -256,6 +270,17 @@ export class RoomComponent implements OnInit{
             this.errorService.setError("Ошибка подключения");
             break;
         }
+      }
+    )
+
+    this.apiService.toGetUsers(token, this.id)
+    .subscribe(
+      (response: any)=>{
+        const users = response.filter((user: User)=>user.id)
+        this.users = response;
+      },
+      (error: HttpErrorResponse)=>{
+        console.log(error);
       }
     )
   }

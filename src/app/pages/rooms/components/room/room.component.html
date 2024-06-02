@@ -23,7 +23,7 @@
             <div class="Room__file" *ngFor="let item of files" (click)="downloadFile(item.id)">
 
                 <div class="Room__fileImage"
-                    [style.background-image]="'url('+ images.get(item.format) || '' +')'"
+                    [style.background-image]="'url('+ getURLformat(item.format) || '' +')'"
                 ></div>
 
                 <p>{{item.name}}</p>
@@ -69,7 +69,8 @@
         </div>
 
         <div *ngIf="typeModal === 'users';" class="Modal__allUsers">
-            <p>Пользователи</p>
+            <p *ngIf="users.length > 0">Пользователи</p>
+            <p *ngIf="users.length === 0">Пользователей нет</p>
             <div class="Modal__allUsers">
                 <div *ngFor="let user of users" class="Modal__userBox">
                     <p>{{user.userName}}</p>
