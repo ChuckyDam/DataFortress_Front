@@ -203,6 +203,19 @@ export class ApiService {
 
   }
 
+  toLeaveRoom(token: string, roomId: string){
+
+    const endpoint = "api/Room/leave/";
+    const httpOptions ={
+      headers: new HttpHeaders({
+        'Authorization': `Bearer ${token}`
+      })
+    }
+
+    return this.http.patch(`${this.apiURL}/${endpoint}${roomId}`, {}, httpOptions);
+
+  }
+
   // // Отправка GET-запроса
   // get(endpoint: string, params?: any): Observable<any> {
   //   let queryString = '';

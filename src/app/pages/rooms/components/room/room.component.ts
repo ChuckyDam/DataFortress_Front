@@ -207,6 +207,24 @@ export class RoomComponent implements OnInit{
 
     return "../../../../../assets/images/types/files-svgrepo-com.svg";
   }
+  leaveRoom(){
+    const token = this.cookieService.getCookie("token");
+    if(!token){
+      this.router.navigate(["/"]);
+      return;
+    }
+
+    this.router.navigate(["rooms"]);
+    this.roomsService.removeRoom(this.id);
+    this.apiService.toLeaveRoom(token, this.id)
+    .subscribe(
+    (response)=>{
+      console.log(response);
+    },
+    (error: HttpErrorResponse)=>{
+      console.log(error);
+    })
+  }
 
   public users : User[] = [];
 

@@ -18,6 +18,9 @@ export class FilesService {
 
   constructor() { }
 
+  addFile(item: File){
+    this._files.next([...this._files.value, item]);
+  }
   setFiles(items: File[]){
     this._files.next([...items]);
   }

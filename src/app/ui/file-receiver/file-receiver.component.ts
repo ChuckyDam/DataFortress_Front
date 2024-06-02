@@ -1,5 +1,6 @@
 import { ApiService } from '@/app/services/api.service';
 import { CookieService } from '@/app/services/cookie.service';
+import { FilesService } from '@/app/services/files.service';
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, Input, ViewChild, input } from '@angular/core';
@@ -19,7 +20,7 @@ export class FileReceiverComponent {
   @ViewChild('Drop_zone') modal: ElementRef | undefined;
   @Input() roomId!: string;
 
-  constructor(private cookieService: CookieService, private apiService: ApiService, private router: Router) {}
+  constructor(private cookieService: CookieService, private apiService: ApiService, private router: Router, private filesService: FilesService) {}
 
   public fileQueue = new DataTransfer();
   public files = Array.from(this.fileQueue.files);
@@ -64,8 +65,9 @@ export class FileReceiverComponent {
     for (let i = 0; i < this.fileQueue.files.length; i++) {
       this.apiService.toPostFiles(token,this.roomId,this.fileQueue.files[i])
       .subscribe(
-        (response)=>{
+        (response: any)=>{
           console.log(response);
+          this.filesService.addFile(response);
         },
         (error: HttpErrorResponse)=>{
           console.log(error);

@@ -51,7 +51,7 @@
         <div *ngIf="typeModal === 'settings';" class="Room__modalSettings">
             <button *ngIf="role == '2' || role == '1'" (click)="ModalAddUser()">Добавить пользователя</button>
             <button (click)="ModalUsers()" *ngIf="role == '2'">Все пользователи</button>
-            <button *ngIf="role == '0' || role == '1'" class="redBtn">Покинуть комнату</button>
+            <button *ngIf="role == '0' || role == '1'" class="redBtn" (click)="leaveRoom()">Покинуть комнату</button>
             <button *ngIf="role == '2'" class="redBtn" (click)="ModalSure()">Удалить комнату</button>
         </div>
 

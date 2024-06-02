@@ -19,6 +19,9 @@ export class RoomsService {
   addNewRoom(item: Room) {
     this._rooms.next([...this._rooms.getValue(), item]);
   }
+  removeRoom(id: string) {
+    this._rooms.next([...this._rooms.getValue().filter((room)=>room.id !== id)]);
+  }
   setRooms(rooms: Room[]){
     this._rooms.next([...rooms]);
   }
