@@ -64,6 +64,10 @@
                     [id]="'emailAdd'"
                     [(valueInp)]="email"
                 >Почта: </app-input-auth>
+                <select [(ngModel)]="roleUser" name="roleUser" id="roleUser">
+                    <option value="0" defaultSelected>Пользователь</option>
+                    <option value="1">Модератор</option>
+                </select>
                 <app-button-auth>Добавить</app-button-auth>
             </form>
         </div>

@@ -169,6 +169,7 @@ export class ApiService {
       "userLogin": email,
       "role": role
     }
+    console.log(body)
 
     return this.http.patch(`${this.apiURL}/${endpoint}`, JSON.stringify(body), httpOptions);
 

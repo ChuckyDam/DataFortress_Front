@@ -12,6 +12,7 @@ import { ModalWindowComponent } from '@/app/ui/modal-window/modal-window.compone
 import { CommonModule } from '@angular/common';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -41,7 +42,8 @@ interface User {
     ModalWindowComponent,
     FileReceiverComponent,
     InputAuthComponent,
-    ButtonAuthComponent
+    ButtonAuthComponent,
+    FormsModule
   ],
   templateUrl: './room.component.html',
   styleUrl: './room.component.scss'
@@ -59,6 +61,7 @@ export class RoomComponent implements OnInit{
   }
 
   public email = "";
+  public roleUser: string = "0";
 
   public typeModal = "settings";
   public modalSetting = false;
@@ -145,7 +148,7 @@ export class RoomComponent implements OnInit{
       return;
     }
 
-    this.apiService.toAddUser(token, this.id, this.email)
+    this.apiService.toAddUser(token, this.id, this.email, +this.roleUser)
     .subscribe(
       (response)=>{
         this.backSettingModal();
@@ -165,8 +168,6 @@ export class RoomComponent implements OnInit{
         }
       }
     )
-
-    console.log(this.email);
   }
   onDelUser(userId: string){
     const token = this.cookieService.getCookie("token");
