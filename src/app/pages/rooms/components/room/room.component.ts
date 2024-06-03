@@ -237,7 +237,7 @@ export class RoomComponent implements OnInit{
   public files : File[] = []
   public subData!: Subscription;
 
-  public role: string = '2';
+  public role!: string;
   public subRole!: Subscription;
 
   public subFiles : Subscription|undefined;

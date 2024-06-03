@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class RoomService {
-  private _roleId = new BehaviorSubject<string>('0');
+  private _roleId = new BehaviorSubject<string>('2');
   public role = this._roleId.asObservable();
 
   constructor() { }
