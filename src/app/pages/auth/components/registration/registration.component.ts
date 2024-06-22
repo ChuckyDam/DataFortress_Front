@@ -1,6 +1,6 @@
 import { CookieService } from '@/app/services/cookie.service';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule, HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
